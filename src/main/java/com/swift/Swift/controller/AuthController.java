@@ -1,6 +1,5 @@
 package com.swift.Swift.controller;
 
-import com.swift.Swift.model.User;
 import com.swift.Swift.payload.LoginDTO;
 import com.swift.Swift.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ public class AuthController {
     AuthService authService;
 
     @PostMapping("")
-    public void createUserByPhone(@RequestBody LoginDTO loginDTO) {
-        authService.createUser(loginDTO);
+    public void loginUser(@RequestBody LoginDTO loginDTO) {
+        authService.updateOtp(loginDTO);
     }
 }
