@@ -5,9 +5,6 @@ import com.swift.Swift.payload.LoginDTO;
 import com.swift.Swift.repository.AuthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -42,22 +39,5 @@ public class AuthService {
         if (user.isEmpty())
             user = Optional.of(createUser(loginDTO));
         return user;
-    }
-
-    public void updateOtp(LoginDTO loginDTO) {
-        Optional<User> user = checkIfUserExists(loginDTO);
-        Update update = new Update();
-        update.set("otp", generateOtp());
-        Query query = new Query();
-        if (loginDTO.getMobileNo() != null)
-            query.addCriteria(Criteria.where("mobileNo").is(loginDTO.getMobileNo()));
-        else if (loginDTO.getEmailId() != null)
-            query.addCriteria(Criteria.where("emailId").is(loginDTO.getEmailId()));
-        mongoTemplate.updateFirst(query, update, User.class);
-    }
-
-    public String generateOtp() {
-        int otp = random.nextInt(900000) + 100000;
-        return String.valueOf(otp);
     }
 }
